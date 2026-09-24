@@ -19,7 +19,7 @@ $installMessages = [PSCustomObject]@{
     welcome    = "Ласкаво просимо до встановлення RDP Security Suite!"
     secondPage = [PSCustomObject]@{
         ua    = "Слава Україні!"
-        other = "Installation is currently only available for Ukraine (detected: {0})."
+        other = "WELCOME TO UKRAINE!"
     }
 }
 
