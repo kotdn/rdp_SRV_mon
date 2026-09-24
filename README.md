@@ -50,7 +50,9 @@
 
 ## Встановлення
 
-Готова збірка (self-contained, .NET встановлювати окремо не потрібно) — у [`Install/`](Install/):
+Готова збірка (self-contained, .NET встановлювати окремо не потрібно) — у [`Install/`](Install/).
+
+**Завантажуйте весь репозиторій цілим архівом** (кнопка **Code → Download ZIP** на сторінці репозиторію, або `git clone`), а не окремі файли з папки `Install/` — `install.ps1` розпаковує `WinService.zip`/`RDPMonitor.zip`, які мають лежати поряд з ним, і без них просто не запуститься.
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
