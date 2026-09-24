@@ -1,10 +1,47 @@
 param(
     [string]$InstallRoot = "C:\Program Files\RDPSecurityService",
     [switch]$StartMonitor = $false,
-    [switch]$SkipGeoCheck = $false
+    [switch]$SkipGeoCheck = $false,
+    [string]$MessagesConfigPath
 )
 
 $ErrorActionPreference = "Stop"
+
+# Text shown on the two install "pages" (welcome banner, then the geo-IP result) comes from
+# install.config.json next to this script, so it can be edited without touching install.ps1.
+# Defaults below are used for any key missing from that file (or if it's absent entirely).
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+if (-not $MessagesConfigPath) {
+    $MessagesConfigPath = Join-Path $scriptRoot "install.config.json"
+}
+
+$installMessages = [PSCustomObject]@{
+    welcome    = "Ласкаво просимо до встановлення RDP Security Suite!"
+    secondPage = [PSCustomObject]@{
+        ua    = "Слава Україні!"
+        other = "Installation is currently only available for Ukraine (detected: {0})."
+    }
+}
+
+if (Test-Path $MessagesConfigPath) {
+    try {
+        $loaded = Get-Content -LiteralPath $MessagesConfigPath -Raw | ConvertFrom-Json
+        if ($loaded.welcome) { $installMessages.welcome = [string]$loaded.welcome }
+        if ($loaded.secondPage) {
+            if ($loaded.secondPage.ua) { $installMessages.secondPage.ua = [string]$loaded.secondPage.ua }
+            if ($loaded.secondPage.other) { $installMessages.secondPage.other = [string]$loaded.secondPage.other }
+        }
+    } catch {
+        Write-Warning "Failed to read ${MessagesConfigPath}: $($_.Exception.Message). Using default messages."
+    }
+}
+
+# --- Page 1: welcome ---
+Write-Host ""
+Write-Host "===================================================" -ForegroundColor Cyan
+Write-Host $installMessages.welcome -ForegroundColor Cyan
+Write-Host "===================================================" -ForegroundColor Cyan
+Write-Host ""
 
 function Test-InstallCountry {
     try {
@@ -15,14 +52,16 @@ function Test-InstallCountry {
     }
 }
 
+# --- Page 2: geo-IP check ---
 if (-not $SkipGeoCheck) {
     $countryCode = Test-InstallCountry
     if ($countryCode -eq "UA") {
-        Write-Host "Слава Україні!" -ForegroundColor Yellow
+        Write-Host $installMessages.secondPage.ua -ForegroundColor Yellow
     } elseif ($null -eq $countryCode) {
         Write-Warning "Could not determine install location (no internet access or geo-IP lookup failed). Continuing anyway. Use -SkipGeoCheck to silence this check entirely."
     } else {
-        Write-Host "Installation is currently only available for Ukraine (detected: $countryCode)." -ForegroundColor Red
+        $blockedMessage = $installMessages.secondPage.other -f $countryCode
+        Write-Host $blockedMessage -ForegroundColor Red
         exit 1
     }
 }
