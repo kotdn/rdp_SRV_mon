@@ -1,0 +1,32 @@
+# Build results
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# IDE
+.vs/
+.vscode/
+*.sln.user
+*.suo
+
+# Dependencies
+packages/
+.nuget/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+*.log
+*.csv
+*.backup
+
+# Release artifacts (generated)
+release/*.zip
+release/*.msi
+release/RDP-Security-Suite-ZIP/
+release/RDP-Security-Suite-ZIP-PUBLIC/
+release/_archive_*/

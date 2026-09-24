@@ -1,0 +1,16 @@
+ZipReportReader.exe usage
+
+1) Run from command line:
+   ZipReportReader.exe "C:\path\to\rdp-security-stats-*.zip"
+
+2) The utility reads support-report.json from ZIP and prints summary stats:
+   - machine, user, OS, service status
+   - access attempts total and last 24h
+   - active blocked targets (IPs/subnets)
+   - whitelist count
+   - top blocked targets
+
+Return codes:
+  0 - success
+  1 - read/parse error
+  2 - wrong arguments

@@ -1,0 +1,59 @@
+{
+  "port": 3389,
+  "failedAttemptsWindowDays": 1,
+  "levels": [
+    {
+      "attempts": 3,
+      "blockMinutes": 30
+    },
+    {
+      "attempts": 5,
+      "blockMinutes": 180
+    },
+    {
+      "attempts": 7,
+      "blockMinutes": 2880
+    }
+  ],
+  "telegram": {
+    "enabled": false,
+    "botToken": "",
+    "chatId": "",
+    "limitedPhones": [],
+    "selfUnbanIp": "",
+    "hereProbeEnabled": false,
+    "hereProbePublicUrl": "https://your-domain.example/here",
+    "hereProbeListenPrefix": "http://+:18088/"
+  },
+  "antiBrute": {
+    "enabled": true,
+    "spray": {
+      "enabled": true,
+      "windowMinutes": 10,
+      "uniqueIpsThreshold": 4,
+      "blockMinutes": 240
+    },
+    "recurrence": {
+      "enabled": true,
+      "lookbackHours": 24,
+      "stepMultiplier": 0.5,
+      "maxMultiplier": 4.0
+    },
+    "subnet": {
+      "enabled": true,
+      "windowMinutes": 30,
+      "uniqueIpsThreshold": 3,
+      "blockMinutes": 240
+    },
+    "ipAbuse": {
+      "windowMinutes": 10,
+      "distinctUsersThreshold": 3
+    },
+    "subnetUserSpray": {
+      "enabled": true,
+      "windowMinutes": 10,
+      "uniqueIpsInSubnetThreshold": 2,
+      "blockMinutes": 120
+    }
+  }
+}
