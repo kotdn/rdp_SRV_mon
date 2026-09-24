@@ -50,15 +50,15 @@
 
 ## Установка
 
-Актуальный путь установки — из готового релиз-пакета:
+Готовая сборка (self-contained, .NET ставить отдельно не нужно) — в [`Install/`](Install/):
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-cd .\release\RDP-Security-Suite-ZIP
-.\install-clean.ps1 -StartMonitor
+cd Install
+.\install.ps1 -StartMonitor
 ```
 
-Подробности и чек-лист проверки — в [CANONICAL_INSTALL.md](CANONICAL_INSTALL.md).
+Подробности — в [Install/README.md](Install/README.md). Если предпочитаете собрать из исходников сами — там же есть команды `dotnet publish`.
 
 Monitor требует запуска с правами администратора (это прописано в его манифесте) — без этого он не сможет читать/писать конфигурацию и логи службы.
 
@@ -87,3 +87,7 @@ Monitor требует запуска с правами администрато
 ## Поддержка
 
 Баги и вопросы — через [Issues](https://github.com/kotdn/rdp_SRV_mon/issues), не личным контактом: так проще искать дубликаты и прикладывать логи/support-report из Monitor.
+
+## Лицензия
+
+[MIT](LICENSE).

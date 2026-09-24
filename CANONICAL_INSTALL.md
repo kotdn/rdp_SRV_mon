@@ -7,12 +7,9 @@ This repository now supports only one production installation path:
 - install root: C:\Program Files\RDPSecurityService
 - runtime/config/logs: C:\ProgramData\RDPSecurityService
 
-## Supported installer entry points
+## Supported installer entry point
 
-Use one of these scripts from release package:
-
-- release/RDP-Security-Suite-ZIP/install-clean.ps1
-- release/RDP-Security-Suite-ZIP-PUBLIC/install-clean.ps1
+- Install/install.ps1 (see [Install/README.md](Install/README.md))
 
 Run as Administrator.
 
@@ -20,16 +17,8 @@ Run as Administrator.
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-cd .\release\RDP-Security-Suite-ZIP
-.\install-clean.ps1 -StartMonitor
-```
-
-For public package:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-cd .\release\RDP-Security-Suite-ZIP-PUBLIC
-.\install-clean.ps1 -StartMonitor
+cd Install
+.\install.ps1 -StartMonitor
 ```
 
 ## What this does
