@@ -1,9 +1,31 @@
 param(
     [string]$InstallRoot = "C:\Program Files\RDPSecurityService",
-    [switch]$StartMonitor = $false
+    [switch]$StartMonitor = $false,
+    [switch]$SkipGeoCheck = $false
 )
 
 $ErrorActionPreference = "Stop"
+
+function Test-InstallCountry {
+    try {
+        $geo = Invoke-RestMethod -Uri "http://ip-api.com/json/?fields=countryCode" -TimeoutSec 5
+        return $geo.countryCode
+    } catch {
+        return $null
+    }
+}
+
+if (-not $SkipGeoCheck) {
+    $countryCode = Test-InstallCountry
+    if ($countryCode -eq "UA") {
+        Write-Host "Слава Україні!" -ForegroundColor Yellow
+    } elseif ($null -eq $countryCode) {
+        Write-Warning "Could not determine install location (no internet access or geo-IP lookup failed). Continuing anyway. Use -SkipGeoCheck to silence this check entirely."
+    } else {
+        Write-Host "Installation is currently only available for Ukraine (detected: $countryCode)." -ForegroundColor Red
+        exit 1
+    }
+}
 
 function Write-Step([string]$msg) {
     Write-Host "[INFO] $msg" -ForegroundColor Cyan
