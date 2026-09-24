@@ -1974,13 +1974,18 @@ class Program
                         return;
                     }
 
-                    AuthorizeLimitedTelegramChat(chatId);
-                    // Force keyboard refresh in Telegram clients that cache old layouts.
+                    // No self-service access: /start alone must NOT grant the limited role.
+                    // An admin has to explicitly allow this person's phone number first via
+                    // /adduser; only sharing a phone that matches that allowlist (checked in
+                    // HandleTelegramContactShare) actually calls AuthorizeLimitedTelegramChat.
+                    // Previously this called AuthorizeLimitedTelegramChat(chatId) unconditionally
+                    // here, so anyone who found the bot could /start their way into limited
+                    // access (including the self-unban button) without ever being approved.
                     TrySendTelegramText(chatId, UiText("Оновлюю клавіатуру...", "Refreshing keyboard..."), BuildKeyboardRemoveJson());
                     TrySendTelegramText(
                         chatId,
-                        UiText($"✅ Доступ обмеженого користувача активовано.\nUI: {Program.TelegramUiRevision}", $"✅ Limited user access activated.\nUI: {Program.TelegramUiRevision}"),
-                        BuildSelfUnbanKeyboardJson());
+                        UiText("Для доступу поділіться номером телефону кнопкою нижче. Номер має бути заздалегідь доданий адміністратором через /adduser.", "To get access, share your phone number using the button below. It must already be allowed by an admin via /adduser."),
+                        BuildContactRequestKeyboardJson());
                     return;
                 }
 
